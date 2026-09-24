@@ -1,0 +1,162 @@
+PARTE 1 — QUESTÕES TEÓRICAS
+
+
+1. FUNDAMENTOS DE JAVA E COMPILAÇÃO
+
+Q1. Ela está parcialmente certa. O .java não é interpretado direto: primeiro o 
+javac compila pra bytecode (.class), e só depois a JVM executa esse bytecode. 
+A JVM até interpreta no começo, mas usa o JIT pra compilar os trechos mais 
+usados em código de máquina nativo. Ou seja, tem compilação em duas etapas, 
+não é "linha a linha" como ela pensa. Por conta desses motivos é um processo 
+rápido de dinâmico.
+
+Q2. O erro é de conversão de tipo (sintaxe/tipagem estrita). A
+multiplicação de um int por um double resulta em um double, e o
+Java não permite guardar um double dentro de uma variável int sem
+cast (pois há perda de precisão).
+
+Linha corrigida:
+double total = quantidade * preco;
+
+
+2. ARRAYS
+
+Q3. (a) Possui 5 posições, com índices válidos de 0 a 4.
+    (b) Acessar notas[5] causa o erro/exceção ArrayIndexOutOfBoundsException.
+    (c) O valor inicial de cada posição é 0 (padrão para arrays de
+    inteiros em Java).
+
+Q4. O for tradicional utiliza um índice numérico de controle para
+acessar as posições, enquanto o for-each percorre diretamente os
+elementos da coleção do início ao fim. Alterar os valores guardados no
+array 
+
+
+3. INTRODUÇÃO À ORIENTAÇÃO A OBJETOS
+
+Q5. O "estado" do objeto era representado pelas características ou
+dados memorizados pelo aluno na peça (ex: a posição que ele
+ocupava, ou se ele era X ou O). O "método sendo chamado" era
+representado pela comunicação, quando um aluno pedia/mandava
+outro aluno fazer alguma ação.
+
+Q6. A Classe é o molde ou fôrma, enquanto o Objeto é a materialização
+desse molde.
+
+Exemplo: a classe é Carro (define que tem cor e modelo), e o
+objeto é o meuCarro (um Fusca azul específico estacionado na
+garagem).
+
+
+
+4. CLASSES, OBJETOS, ATRIBUTOS E MÉTODOS
+
+Q7. 1. Atributos públicos: quebra o encapsulamento, permitindo que
+    qualquer classe altere as notas livremente.
+
+    2. Sobrecarga confusa do método media: um retorna double e o
+    outro não retorna nada (void), mas imprime na tela — o que
+    fere o padrão de projeto.
+
+    3. Impressão direta no modelo (I/O): a classe de modelo Aluno não
+    deveria usar System.out.println; quem deve exibir dados na
+    tela é a classe principal/aplicação.
+
+
+
+5. DIAGRAMA DE CLASSE
+
+Q8. Atributo pertence ao objeto (declarado no corpo da classe);
+variável local existe apenas durante a execução de um método.
+
+Exemplo:
+public void setNome(String nome) {
+	this.nome = nome;
+}
+
+(this.nome é o atributo da classe; nome é a variável local
+recebida como parâmetro).
+
+Q9. (a) Classe: Bicicleta.
+    (b) Atributos: modelo, cor, disponivel.
+    Métodos: Bicicleta(...), alugar(), devolver(), getModelo().
+
+    (c) "-" significa visibilidade private (acessível apenas dentro
+    da própria classe).
+    "+" significa visibilidade public (acessível por qualquer
+    classe de qualquer pacote em Java).
+
+Q10. public Bicicleta(String modelo, String cor);
+     public boolean alugar();
+     public void devolver();
+     public String getModelo();
+
+
+6. ENCAPSULAMENTO, CONSTRUTORES E MEMBROS ESTÁTICOS
+
+Q11. Sem regras nos getters/setters, qualquer valor pode ser atribuído,
+anulando a proteção. Para aproveitar o benefício do encapsulamento,
+faltaria colocar regras de validação e lógica de negócio dentro
+dos métodos set (ex: impedir notas negativas).
+
+Q12. O erro ocorre porque os dois construtores possuem a mesma
+assinatura (String, String). O Java reconhece os métodos/
+construtores pelo tipo dos parâmetros na ordem em que aparecem,
+e não pelo nome das variáveis. Para corrigir, deve-se manter
+apenas um construtor que receba (String nome, String cpf).
+
+Q13. (a) Deve ser estático, pois o total é uma informação global da
+     classe inteira (quantos clientes existem no total) e não uma
+     característica individual de um único cliente.
+     
+     (b) O incremento totalDeClientes++ deve ser feito dentro do
+     método construtor da classe Cliente.
+
+
+
+7. PACOTES E ASSOCIAÇÃO ENTRE CLASSES
+
+Q14.
+
+1. Fazer o import das classes:
+       import br.uesb.locadora.modelo.*;
+   (ou especificamente Bicicleta e Cliente).
+
+2. Garantir que as classes Bicicleta e Cliente, e seus
+   construtores/métodos, estejam declarados com a palavra
+   reservada public.
+
+Q15. (a) Cliente "1" <--- "*" Aluguel "*" ---> "1" Bicicleta
+
+     (b) Do lado da classe Cliente é anotado como 1, e do lado da
+     classe Aluguel é anotado como * (asterisco, indicando muitos).
+
+
+
+8. ENUM E ARRAYLIST
+
+Q16. Problemas práticos com String:
+
+1. Erros de digitação (ex: escrever "Urban" em vez de "urbana").
+
+2. Falta de padronização, dificultando comparações (letras
+   maiúsculas vs minúsculas).
+   
+   Resolução: uso de enumeração no código prático (ver
+   TipoBicicleta.java).
+
+
+Q17. (a) O array tradicional tem tamanho fixo definido na sua criação;
+     ele não pode crescer dinamicamente para aceitar novas
+     bicicletas além do limite.
+
+     (b) ArrayList<Bicicleta> frota = new ArrayList<>();
+     Métodos: add() para adicionar e remove() para dar baixa.
+
+Q18. Isso acontece porque, ao usar remove(i) em um loop crescente (ou
+for-each), os índices dos elementos subsequentes da lista são
+rebaixados imediatamente, fazendo o índice do loop pular o
+próximo elemento.
+
+Solução correta: usar o método remove() através de um Iterator,
+ou fazer o for tradicional de trás para frente (decrescente).
